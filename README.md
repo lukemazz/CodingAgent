@@ -1,251 +1,238 @@
-# 🤖 Sistema Agentico AI con LM Studio
+Ecco il file `README.md` riscritto esattamente con lo stile, la struttura e la formattazione professionale dell'esempio che hai fornito, adattato però alle reali funzionalità e comandi del tuo codice.
 
-Un sistema che permette a modelli AI locali di operare autonomamente sul computer, eseguendo task complessi attraverso azioni sequenziali sul file system.
+---
+
+# 🤖 AI Agent Terminal
+
+Un sistema agentico avanzato da terminale che permette a modelli AI (sia locali che cloud) di operare autonomamente sul computer, eseguendo task complessi attraverso azioni sequenziali sul file system.
 
 ## 📋 Caratteristiche
 
-- ✅ **Autonomia completa**: L'AI analizza, pianifica ed esegue task senza intervento umano
-- 🔄 **Gestione memoria intelligente**: Ottimizzazione automatica del contesto per conversazioni lunghe
-- 🛠️ **13 comandi operativi**: Gestione completa di file, directory e shell
-- 📝 **Logging dettagliato**: Tracciamento di tutte le operazioni eseguite
-- 🔒 **Controllo iterazioni**: Limite massimo configurabile per evitare loop infiniti
-- 🧠 **Ragionamento esplicito**: Ogni azione include il processo decisionale dell'AI
+* ✅ **Agnostico al Modello**: Supporta LM Studio, Ollama, OpenAI, Anthropic e Groq
+* 🛡️ **Safe Mode Integrata**: Protezione attiva contro comandi distruttivi con richiesta di conferma
+* 🔄 **Loop Autonomo**: L'AI analizza, pianifica, esegue e corregge i propri errori
+* 📂 **Workspace Isolato**: Tutte le operazioni avvengono in una sandbox sicura
+* 🎨 **Interfaccia CLI**: Output colorato e strutturato per una facile lettura
+* 🛠️ **13 Tool Nativi**: Set completo di strumenti per manipolazione file e sistema
 
 ## 🚀 Prerequisiti
 
 ### Software Richiesto
 
-1. **Python 3.7+**
-2. **[LM Studio](https://lmstudio.ai/)** installato e configurato
-3. Dipendenze Python:
-   ```bash
-   pip install requests
-   ```
+1. **Python 3.8+**
+2. **[LM Studio](https://lmstudio.ai/)** o **[Ollama](https://ollama.com/)** (opzionali per uso locale)
+3. API Keys (opzionali per uso Cloud: OpenAI, Anthropic, Groq)
 
-### Configurazione LM Studio
+### Configurazione Dipendenze
 
-1. Scarica e installa LM Studio
-2. Scarica un modello compatibile (es. Llama 3, Mistral, Phi-3)
-3. Avvia il server locale:
-   - Apri LM Studio
-   - Vai su "Local Server"
-   - Clicca "Start Server"
-   - Verifica che sia in esecuzione su `http://localhost:1234`
+```bash
+pip install -r requirements.txt
+
+```
 
 ## 📦 Installazione
 
 ```bash
 # Clone del repository
-git clone https://github.com/tuousername/ai-agent-lmstudio.git
-cd ai-agent-lmstudio
+git clone https://github.com/tuousername/ai-agent-terminal.git
+cd ai-agent-terminal
 
 # Installazione dipendenze
 pip install -r requirements.txt
 
 # Rendi eseguibile lo script (Linux/Mac)
-chmod +x ai_agent.py
+chmod +x main.py
+
 ```
 
 ## 🎮 Utilizzo Rapido
 
-### Avvio Base
+### Avvio Base (LM Studio)
+
+Assicurati che LM Studio sia attivo su `localhost:1234`.
 
 ```bash
-python ai_agent.py
+python main.py
+
+```
+
+### Avvio con Parametri Specifici
+
+```bash
+# Usa Ollama con Llama 3
+python main.py --provider ollama --model llama3
+
+# Usa Groq per velocità estrema
+python main.py --provider groq --model llama3-70b-8192 --safe-mode
+
 ```
 
 ### Esempio di Sessione
 
-```
-📡 CONFIGURAZIONE LM STUDIO
-URL LM Studio (default: http://localhost:1234/v1): [INVIO]
-✓ Connesso a LM Studio
-  Modello auto-selezionato: llama-3-8b-instruct
+```text
+🔧 Provider:  lmstudio
+🧠 Model:     local-model
+📂 Workspace: ./workspace
+------------------------------------------------------------
 
-📁 CONFIGURAZIONE DIRECTORY
-Directory di lavoro (vuoto per corrente): ./progetti
+You ➤ Crea un file python che calcola i numeri di Fibonacci
 
-🎯 DEFINISCI IL TASK
-Cosa vuoi che l'AI faccia?
-> Crea un server web Flask con endpoint /health che ritorna {"status": "ok"}
+Thinking...
 
-🤖 ESECUZIONE AGENTICA
-[L'AI procede autonomamente...]
+⚙️ Comando: [CREATE_FILE] path: fib.py
+✅ File creato: fib.py
+
+🤖 AI: Ho creato lo script. Vuoi che lo esegua per testarlo?
+
+You ➤ Procedi
+
+⚙️ Comando: [EXECUTE] command: python fib.py
+📤 Output: 0, 1, 1, 2, 3, 5...
+
 ```
 
 ## 📚 Comandi Disponibili
 
+L'agente utilizza un sistema di tag specifici per interagire con il sistema.
+
 ### Gestione File
 
 | Comando | Descrizione | Esempio |
-|---------|-------------|---------|
-| `CREATE_FILE` | Crea un nuovo file | Scrivere codice, configurazioni |
-| `READ_FILE` | Legge contenuto file | Analizzare codice esistente |
-| `MODIFY_FILE` | Modifica file esistente | Aggiungere righe, sostituire contenuto |
-| `DELETE_FILE` | Elimina file | Pulizia file temporanei |
-| `MOVE_FILE` | Sposta file | Riorganizzare struttura |
-| `COPY_FILE` | Copia file | Backup, duplicazione |
-| `GET_INFO` | Info su file | Dimensione, data modifica |
+| --- | --- | --- |
+| `[CREATE_FILE]` | Crea un nuovo file | Scrivere script, note, config |
+| `[READ_FILE]` | Legge contenuto file | Analizzare codice esistente |
+| `[EDIT_FILE]` | Modifica file (Search & Replace) | Refactoring, bugfix |
+| `[DELETE_FILE]` | Elimina file | Pulizia (richiede conferma in Safe Mode) |
+| `[APPEND_FILE]` | Aggiunge contenuto in coda | Log, liste, aggiunte rapide |
 
 ### Gestione Directory
 
 | Comando | Descrizione |
-|---------|-------------|
-| `CREATE_DIR` | Crea directory (ricorsivo) |
-| `DELETE_DIR` | Elimina directory e contenuto |
-| `LIST_FILES` | Elenca file (supporta pattern glob) |
-| `SEARCH_FILES` | Cerca per nome o contenuto |
+| --- | --- |
+| `[CREATE_DIR]` | Crea una nuova directory |
+| `[DELETE_DIR]` | Elimina directory ricorsivamente |
+| `[LIST_DIR]` | Elenca contenuto cartella (ls) |
+| `[TREE]` | Visualizza struttura ad albero |
 
 ### Esecuzione Sistema
 
 | Comando | Descrizione | Esempi |
-|---------|-------------|--------|
-| `EXECUTE_SHELL` | Esegue comandi shell | `git init`, `python test.py`, `npm install` |
-| `DONE` | Segna task completato | Termina l'esecuzione |
+| --- | --- | --- |
+| `[EXECUTE]` | Esegue comandi shell | `python app.py`, `pip install`, `git status` |
+| `[SEARCH]` | Cerca file con pattern (Regex) | Trovare tutti i `.py` o file specifici |
+| `[DONE]` | Segna task completato | Termina l'esecuzione e riassume |
+| `[RESPOND]` | Risponde all'utente | Chiedere chiarimenti o conversare |
 
 ## 💡 Esempi Pratici
 
-### Esempio 1: Creare Applicazione Web
+### Esempio 1: Creazione Progetto Web
 
-**Task**: "Crea un'applicazione Flask con homepage e API REST per gestire TODO"
+**Task**: "Crea un sito web base con HTML, CSS e un file JS nella cartella 'sito'"
 
 L'AI eseguirà autonomamente:
-1. Creazione struttura directory
-2. File `app.py` con Flask
-3. Template HTML
-4. File `requirements.txt`
-5. Test dell'applicazione
-6. Verifica funzionamento
 
-### Esempio 2: Setup Progetto Python
+1. `[CREATE_DIR]` path: sito
+2. `[CREATE_FILE]` path: sito/index.html
+3. `[CREATE_FILE]` path: sito/style.css
+4. `[CREATE_FILE]` path: sito/app.js
+5. `[DONE]` Riepilogo creazione sito.
 
-**Task**: "Inizializza un progetto Python con poetry, struttura src/tests e pre-commit"
+### Esempio 2: Refactoring Codice
+
+**Task**: "Leggi il file main.py e cambia il colore dei messaggi di errore in ROSSO"
 
 L'AI gestirà:
-1. Installazione Poetry
-2. Creazione `pyproject.toml`
-3. Struttura directory standard
-4. Configurazione pre-commit
-5. File README e .gitignore
 
-### Esempio 3: Analisi e Refactoring
+1. `[READ_FILE]` path: main.py
+2. Analisi del codice
+3. `[EDIT_FILE]` Sostituzione codici colore ANSI
+4. `[EXECUTE]` Test del file (se richiesto)
 
-**Task**: "Trova tutti i file Python, analizza le funzioni duplicate e crea un modulo utils"
+### Esempio 3: Esplorazione e Pulizia
+
+**Task**: "Mostrami la struttura della cartella corrente ed elimina i file .log"
 
 L'AI eseguirà:
-1. Ricerca file `.py`
-2. Lettura e analisi codice
-3. Identificazione duplicati
-4. Creazione `utils.py`
-5. Refactoring file originali
+
+1. `[TREE]` path: . depth: 2
+2. `[SEARCH]` pattern: .log
+3. `[DELETE_FILE]` per ogni file trovato (con conferma utente)
 
 ## ⚙️ Configurazione Avanzata
 
-### Modifica Parametri
+### Variabili d'Ambiente
 
-Modifica direttamente nello script `ai_agent.py`:
+Per i provider Cloud, imposta le chiavi prima dell'avvio:
 
-```python
-class AIAgent:
-    def __init__(self, working_dir=None):
-        self.max_iterations = 20  # Cambia qui il limite iterazioni
+```bash
+# Linux/Mac
+export OPENAI_API_KEY="sk-..."
+export ANTHROPIC_API_KEY="sk-ant-..."
+export GROQ_API_KEY="gsk-..."
 
-class LMStudioClient:
-    def __init__(self, base_url="http://localhost:1234/v1", model=None):
-        self.history_limit = 10  # Messaggi di storia mantenuti
+# Windows PowerShell
+$env:OPENAI_API_KEY="sk-..."
+
 ```
 
-### Temperature e Creatività
+### Configurazione `config.py`
 
-Nel metodo `chat()` di `LMStudioClient`:
+Puoi modificare i parametri di default direttamente nel file:
 
 ```python
-payload = {
-    "temperature": 0.7,  # 0.0 = deterministico, 1.0 = creativo
-    "max_tokens": -1,    # -1 = massimo disponibile
-}
+@dataclass
+class Config:
+    provider: str = "lmstudio"      # Provider predefinito
+    safe_mode: bool = True          # Attiva conferme per azioni pericolose
+    workspace: str = "./workspace"  # Sandbox operativa
+    max_file_size_mb: int = 10      # Limite lettura file
+
 ```
 
 ## 🔧 Risoluzione Problemi
 
-### Errore: "LM Studio non raggiungibile"
+### Errore: "Comando sconosciuto / Risposta non valida"
 
-**Causa**: Server LM Studio non attivo
-
-**Soluzione**:
-```bash
-1. Apri LM Studio
-2. Vai su "Local Server"
-3. Clicca "Start Server"
-4. Verifica porta 1234
-```
-
-### Errore 500: "Memoria piena"
-
-**Causa**: Contesto del modello esaurito
+**Causa**: Il modello LLM non ha rispettato il formato dei tag `[COMANDO]`.
 
 **Soluzione**:
-- Riduci `history_limit` in `LMStudioClient`
-- Usa un modello con contesto maggiore (32k+ tokens)
-- Riavvia lo script per conversazioni molto lunghe
 
-### L'AI ripete comandi falliti
+* Usa un modello più capace (es. Llama 3 8B invece di modelli < 7B).
+* Abbassa la temperatura nel provider in `agent.py`.
+* L'agente proverà automaticamente a correggersi al prossimo turno.
 
-**Causa**: Modello non interpreta correttamente gli errori
+### Errore: "Accesso negato / Fuori dalla workspace"
+
+**Causa**: L'AI ha tentato di accedere a file di sistema (es. `/etc/passwd`).
 
 **Soluzione**:
-- Usa modelli più capaci (≥7B parametri)
-- Aumenta la temperatura per risposte più creative
-- Verifica che il system prompt sia caricato correttamente
 
-### Comandi JSON non validi
+* Il sistema di sicurezza impedisce l'uscita dalla cartella `./workspace` tramite i file tools.
+* Usa `[EXECUTE]` con percorsi assoluti se strettamente necessario (e se Safe Mode lo permette).
 
-**Causa**: Modello genera testo extra fuori dal JSON
+### LM Studio non risponde
 
-**Soluzione**: La funzione `extract_json_from_response()` gestisce automaticamente questi casi
+**Causa**: Server locale non avviato o porta errata.
+
+**Soluzione**:
+
+1. Apri LM Studio -> Local Server.
+2. Verifica che l'URL sia `http://localhost:1234/v1`.
+3. Assicurati di aver caricato un modello in memoria.
 
 ## 🤝 Contribuire
 
 Contributi benvenuti! Per favore:
 
 1. Fork del repository
-2. Crea un branch per la feature (`git checkout -b feature/NuovaFunzionalita`)
-3. Commit delle modifiche (`git commit -m 'Aggiunta NuovaFunzionalita'`)
-4. Push al branch (`git push origin feature/NuovaFunzionalita`)
-5. Apri una Pull Request
-
-## 📄 Licenza
-
-Questo progetto è rilasciato sotto licenza MIT. Vedi il file `LICENSE` per dettagli.
+2. Crea un branch (`git checkout -b feature/NuovaFunzionalita`)
+3. Apri una Pull Request
 
 ## ⚠️ Avvertenze
 
-- **Sicurezza**: L'AI ha accesso completo al file system nella directory configurata
-- **Validazione**: Usa sempre una directory di test per sperimentare
-- **Backup**: Fai backup prima di task su directory importanti
-- **Supervisione**: Monitora le prime esecuzioni per verificare comportamento
-- **Comandi Shell**: L'AI può eseguire qualsiasi comando shell - usa con cautela
-
-## 🌟 Funzionalità Future
-
-- [ ] Supporto per operazioni di rete (HTTP requests)
-- [ ] Integrazione con Git (commit, push automatici)
-- [ ] Modalità interattiva con approvazione manuale
-- [ ] Plugin system per comandi custom
-- [ ] Dashboard web per monitoraggio
-- [ ] Supporto multi-modello (cambio dinamico)
-
-## 📞 Supporto
-
-Per bug, feature request o domande:
-- Apri una [Issue](https://github.com/tuousername/ai-agent-lmstudio/issues)
-- Discussioni su [GitHub Discussions](https://github.com/tuousername/ai-agent-lmstudio/discussions)
-
-## 🙏 Ringraziamenti
-
-- [LM Studio](https://lmstudio.ai/) per l'ottimo client locale
-- Community open-source dei modelli LLM
-- Tutti i contributori del progetto
+* **Backup**: Anche se opera in una workspace, l'uso di `[EXECUTE]` (shell) è potente. Non eseguire su dati sensibili senza backup.
+* **Costi API**: Se usi OpenAI/Anthropic, monitora il consumo dei token.
+* **Safe Mode**: Si consiglia di tenerla sempre attiva (`True`) per evitare cancellazioni accidentali.
 
 ---
 
